@@ -34,7 +34,7 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
 db.once('open', () => console.log('Database connected'));
 
-const portNum = 8080;
+const portNum = process.env.PORT || 8080;
 
 app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
