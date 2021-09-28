@@ -8,13 +8,9 @@ const Review = require('../models/review');
 const User = require('../models/user');
 const cities = require('./cities');
 const { descriptors, places } = require('./seedHelpers');
-// const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
-// const mapboxToken = 'pk.eyJ1IjoiYWZmMTIzNDU2IiwiYSI6ImNrdHZzbnQ0djBiM2UydWxlbWF4cmEyZHoifQ.PSfWuDc06JXRErUMzsbw-Q';
-// const geocoder = mbxGeocoding({ accessToken: mapboxToken });
 
-// const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
-const dbUrl = process.env.DB_URL;
-// const dbUrl = "mongodb+srv://aff123456:UvJ0FlyHnDsuRiFt@cluster0.ajwjn.mongodb.net/YelpCamp?retryWrites=true&w=majority";
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
+// const dbUrl = process.env.DB_URL;
 mongoose.connect(dbUrl)
     .then(() => console.log('Connection OPEN!'))
     .catch((err) => console.log('Connection error! ', err));
