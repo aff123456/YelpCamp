@@ -1,0 +1,30 @@
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark">
+    <div class="container-fluid" id="navbar">
+        <a class="navbar-brand" href="/">YelpCamp</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav">
+                <!-- <a class="nav-link active" aria-current="page" href="/">Home</a> -->
+                <a class="nav-link" href="/campgrounds">Campgrounds</a>
+                <a class="nav-link" href="/campgrounds/new">New Campground</a>
+                <% if (currentUser) { %>
+                    <a class="nav-link" href="/user/<%= currentUser._id %>">Your campgrounds</a>
+                <% } %>
+                <!-- <a class="nav-link" href="/register">Register</a>
+                    <a class="nav-link" href="/login">Log in</a> -->
+            </div>
+            <div class="navbar-nav ms-auto align-middle">
+                <% if (!currentUser) { %>
+                    <a class="nav-link" href="/login">Log In</a>
+                    <a class="nav-link" href="/register">Register</a>
+                <% } else { %>
+                    <h5 class="text-danger my-auto navbar-username me-2"><%= currentUser.username %></h5>
+                    <a class="nav-link" href="/logout">Log Out</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</nav>
