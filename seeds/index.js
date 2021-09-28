@@ -1,14 +1,21 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 const mongoose = require('mongoose');
 const Campground = require('../models/campground');
 const Review = require('../models/review');
 const User = require('../models/user');
 const cities = require('./cities');
 const { descriptors, places } = require('./seedHelpers');
-const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
-const mapboxToken = 'pk.eyJ1IjoiYWZmMTIzNDU2IiwiYSI6ImNrdHZzbnQ0djBiM2UydWxlbWF4cmEyZHoifQ.PSfWuDc06JXRErUMzsbw-Q';
-const geocoder = mbxGeocoding({ accessToken: mapboxToken });
+// const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+// const mapboxToken = 'pk.eyJ1IjoiYWZmMTIzNDU2IiwiYSI6ImNrdHZzbnQ0djBiM2UydWxlbWF4cmEyZHoifQ.PSfWuDc06JXRErUMzsbw-Q';
+// const geocoder = mbxGeocoding({ accessToken: mapboxToken });
 
-mongoose.connect('mongodb://localhost:27017/yelp-camp')
+// const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
+const dbUrl = process.env.DB_URL;
+// const dbUrl = "mongodb+srv://aff123456:UvJ0FlyHnDsuRiFt@cluster0.ajwjn.mongodb.net/YelpCamp?retryWrites=true&w=majority";
+mongoose.connect(dbUrl)
     .then(() => console.log('Connection OPEN!'))
     .catch((err) => console.log('Connection error! ', err));
 
@@ -105,7 +112,7 @@ const seedBD = async () => {
     //     await camp.save();
     // }
     console.log(`Usage: node index.js [campgrounds/user] [reviews] [users]`);
-    console.log(`Created ${numSeeds} new entries/user with ${numReviews} reviews each and ${numUsers} new users`);
+    console.log(`Created ${numSeeds} new entries/user (${numSeeds * numUsers} total) with ${numReviews} reviews each and ${numUsers} new users`);
 
     const test = new User({ email: 'test@gmail.com', username: 'test' });
     await User.register(test, 'monkey');
