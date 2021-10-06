@@ -14,6 +14,8 @@ router.route('/')
     .get(catchAsync(campgrounds.index))
     .post(isLoggedIn, upload.array('image'), validateCampground, catchAsync(campgrounds.postCampground))
 
+router.post('/sort', campgrounds.indexPaginated)
+
 router.get('/new', isLoggedIn, campgrounds.newCampground)
 
 router.route('/:id')

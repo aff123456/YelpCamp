@@ -1,5 +1,14 @@
 <% layout('layouts/boilerplate') %>
 
+<form action="/campgrounds" method="GET">
+    <label class="form-label" for="items">Items per page</label>
+    <select name="items" id="items">
+        <option <%= numItems == 10 ? 'selected' : '' %> value="12">12</option>
+        <option <%= numItems == 25 ? 'selected' : '' %> value="24">24</option>
+        <option <%= numItems == 50 ? 'selected' : '' %> value="36">36</option>
+    </select>
+</form>
+
 <div id="cluster-map"></div>
 
 <h1 class="mb-3">All campgrounds</h1>
@@ -8,23 +17,100 @@
     <a class="btn btn-primary" href="/campgrounds/new">Add a new campground</a>
 </div>
 
-<% for (let campground of campgrounds) { %>
-    <div class="card mb-3">
-        <div class="row">
-            <div class="col-md-4">
-                <img src="<%= campground.images[Math.floor(Math.random() * campground.images.length)].url %>" alt="" class="img-fluid">
+<div class="row">
+    <div class="col-2">
+        <div class="card">
+            <div class="card-body">
+                <h5>Items per page</h5>
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a href="/campgrounds?items=12" class="page-link">12</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="/campgrounds?items=24" class="page-link">24</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="/campgrounds?items=36" class="page-link">36</a>
+                    </li>
+                </ul>
             </div>
-            <div class="col-md-8 pt-3 pe-3">
-                <h4 class="card-title"><%= campground.title %></h4>
-                <p class="card-text"><%= campground.description %></p>
-                <p class="card-text">
-                    <small class="text-muted"><%= campground.location %></small>
-                </p>
-                <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">View Details</a>
+            <div class="card-body">
+                <h5>Items per page</h5>
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a href="/campgrounds?items=12" class="page-link">12</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="/campgrounds?items=24" class="page-link">24</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="/campgrounds?items=36" class="page-link">36</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
-<% } %>
+    <div class="col">
+        <div class="row">
+        <% for (let [num, campground] of campgrounds.entries()) { %>
+            <% if (num >= (index * numItems) && num < (index * numItems) + numItems) { %>
+                <div class="col-4">
+                    <div class="card mb-3">
+                        <div class="col">
+                            <img src="<%= campground.images[Math.floor(Math.random() * campground.images.length)].title %>" alt="" class="card-img-top">
+                        </div>
+                        <div class="col p-3">
+                            <h4 class="card-title"><%= campground.title %> - <%= num %></h4>
+                            <p class="card-text"><%= campground.description %></p>
+                            <p class="card-text">
+                                <small class="text-muted"><%= campground.location %></small>
+                            </p>
+                            <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        <% } %>
+        </div>
+    </div>
+</div>
+
+<div class="col offset-6">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item <%= (index === 0) ? "disabled" : "" %>">
+                <a class="page-link" href="/campgrounds?page=<%= (index > 1) ? parseInt(index) - 1 : 0 %>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <% if (parseInt(index) > 0) { %>
+                <li class="page-item">
+                    <a class="page-link" href="/campgrounds?page=<%= parseInt(index) - 1 %>">
+                        <%= index %>
+                    </a>
+                </li>
+            <% } %>
+            <li class="page-item active">
+                <a class="page-link" href="/campgrounds?page=<%= index %>">
+                    <%= parseInt(index) + 1 %>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="/campgrounds?page=<%= parseInt(index) + 1 %>">
+                    <%= parseInt(index) + 2 %>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="/campgrounds?page=<%= parseInt(index) + 1 %>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
 
 <script>
     const mapboxToken = '<%- process.env.MAPBOX_TOKEN %>';
@@ -32,3 +118,4 @@
 </script>
 
 <script src="/scripts/clusterMap.js"></script>
+<script src="/scripts/itemListener.js"></script>

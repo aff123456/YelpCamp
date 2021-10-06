@@ -8,7 +8,18 @@ const geocoder = mbxGeocoding({ accessToken: mapboxToken });
 
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({});
-    res.render('campgrounds/index', { campgrounds });
+    const index = parseInt(req.query.page) ? req.query.page : 0;
+    const numItems = parseInt(req.query.items) ? req.query.items : 10;
+    res.render('campgrounds/index', { campgrounds, index, numItems });
+}
+
+module.exports.indexPaginated = (req, res) => {
+    const { page, items } = req.body;
+    if (page) {
+        res.redirect(`/campgrounds?page=${page}`);
+    } else {
+        res.redirect(`/campgrounds?items=${items}`);
+    }
 }
 
 module.exports.newCampground = (req, res) => {
@@ -27,6 +38,7 @@ module.exports.showCampground = async (req, res) => {
         req.flash('error', `Campground with id '${id}' can't be found'`);
         return res.redirect('/campgrounds');
     }
+    req.session.returnTo = req.originalUrl;
     res.render('campgrounds/show', { campground });
 }
 
